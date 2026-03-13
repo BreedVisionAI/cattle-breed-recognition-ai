@@ -1,0 +1,1 @@
+path1 = kagglehub.dataset_download("atharvadarpude/indian-cattle-image-dataset")
