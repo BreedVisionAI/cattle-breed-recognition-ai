@@ -1,1 +1,36 @@
+# Existing remote rule
 /datasets
+
+# Python cache and environment
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Jupyter and IDE
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
+
+# Dataset and generated artifacts
+data/raw/
+data/train/
+data/val/
+data/test/
+models/
+*.h5
+*.keras
+*.ckpt
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
