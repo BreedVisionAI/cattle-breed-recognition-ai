@@ -58,7 +58,10 @@ def build_model(num_classes):
 
 	inputs = layers.Input(shape=IMG_SIZE + (3,))
 	x = data_augmentation(inputs)
-	x = layers.Rescaling(1.0 / 255)(x)
+	x = layers.Lambda(
+		tf.keras.applications.mobilenet_v2.preprocess_input,
+		name="mobilenetv2_preprocess",
+	)(x)
 	x = base_model(x, training=False)
 	x = layers.GlobalAveragePooling2D()(x)
 	x = layers.Dropout(0.2)(x)

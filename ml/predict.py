@@ -19,7 +19,7 @@ def predict_image(image_path, model_path=MODEL_PATH, labels_path=LABELS_PATH):
 
 	img = tf.keras.utils.load_img(image_path, target_size=IMG_SIZE)
 	img_array = tf.keras.utils.img_to_array(img)
-	img_array = img_array / 255.0
+	img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
 	img_array = np.expand_dims(img_array, axis=0)
 
 	probs = model.predict(img_array, verbose=0)[0]
