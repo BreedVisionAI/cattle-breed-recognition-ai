@@ -5,7 +5,6 @@ from collections import Counter
 
 import cv2
 
-
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 DEFAULT_BLUR_THRESHOLD = 120.0
 DEFAULT_RAW_DIR = "data/raw"
@@ -21,7 +20,6 @@ def blur_score(image_path):
     image = cv2.imread(image_path)
     if image is None:
         return None
-
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return cv2.Laplacian(gray, cv2.CV_64F).var()
 
@@ -47,7 +45,6 @@ def process_dataset(raw_dir, clean_dir, reject_dir, threshold, delete_rejected=F
         raise ValueError(f"No class folders found in: {raw_dir}")
 
     prepare_output_dirs(class_names, clean_dir, reject_dir)
-
     stats = Counter()
 
     for class_name in class_names:
@@ -112,7 +109,3 @@ def main():
     print(f"Skipped non-image files: {stats['skipped_non_image']}")
 
     print_class_balance(args.clean_dir, "Class balance in cleaned dataset")
-
-
-if __name__ == "__main__":
-    main()
