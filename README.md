@@ -1,84 +1,116 @@
 # Cattle Breed Recognition AI
 
-## Project Overview
+## Overview
 
-This project classifies cattle images into breed categories using deep learning.
-It uses **MobileNetV2 + transfer learning** for faster training and good performance on a moderate-sized dataset.
+This project classifies cattle images into four breeds using transfer learning on MobileNetV2.
 
-Target breeds in this dataset:
+Target classes:
 
 - Gir
 - Red_Sindhi
 - Sahiwal
 - Tharparkar
 
-## Why MobileNetV2
+## Current Pipeline
 
-- Lightweight and fast compared to very large CNN models.
-- Pretrained on ImageNet, so it already understands basic visual patterns.
-- Works well for student projects where compute resources are limited.
+1. Train in Colab with `colab_train_cattle_breed.ipynb`.
+2. Export artifacts:
+	 - `models/cattle_breed_mobilenetv2.keras`
+	 - `models/labels.txt`
+3. Run Flask backend for prediction API.
+4. Use the frontend to upload an image and view predicted breed + score.
 
-## Model Approach (Transfer Learning)
-
-1. Load pretrained MobileNetV2 without the top classification layer.
-2. Freeze base layers so pretrained features are preserved.
-3. Add small custom layers for our breed classes.
-4. Train only the new head first.
-
-## Workflow
-
-1. Collect and organize dataset in class folders under `data/raw`.
-2. Train model using `ml/train.py`.
-3. Save model and labels in `models/`.
-4. Run backend API (`backend/app.py`).
-5. Open frontend (`frontend/index.html`) and test predictions.
-
-## Folder Structure
+## Project Structure
 
 ```text
 cattle-breed-recognition-ai/
 	backend/
 		app.py
 	data/
-		raw/                # local dataset (not pushed)
-		test/               # temporary uploaded files
+		raw/                  # local dataset (ignored in git)
+		test/                 # uploaded test images
 	frontend/
 		index.html
 		script.js
 	ml/
-		train.py
-		predict.py
-	models/               # generated model + labels (not pushed)
+		train.py              # local training script
+		predict.py            # inference used by backend
+	colab_train_cattle_breed.ipynb
+	models/                 # generated model + labels (ignored in git)
 	README.md
 	requirements.txt
 ```
 
-## Setup (Local)
+## Local Setup
 
 ```bash
-python -m venv .venv
-.venv\Scripts\activate
+python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Train
+## Training (Recommended: Colab)
 
-```bash
-python ml/train.py
-```
+Use `colab_train_cattle_breed.ipynb` to train with:
 
-## Run Backend
+- pretrained MobileNetV2
+- class weights for imbalance
+- fine-tuning stage
+- model and labels export
+
+After training, keep these files in `models/` locally:
+
+- `cattle_breed_mobilenetv2.keras`
+- `labels.txt`
+
+## Run Prediction API
 
 ```bash
 python backend/app.py
 ```
 
-## Open Frontend
+API endpoint:
 
-Open `frontend/index.html` in browser and upload an image.
+- `POST /predict` with multipart field `image`
 
-## Notes for GitHub
+Response includes:
 
-- Push source code, docs, and small config files.
-- Do not push full dataset and trained model files.
-- `.gitignore` already excludes heavy and generated files.
+- `predicted_class`
+- `score` / `score_percent`
+- `top_predictions`
+
+## Run Frontend
+
+Open `frontend/index.html` in a browser.
+
+The frontend calls backend endpoint:
+
+- default: `http://127.0.0.1:5000/predict`
+- override by setting browser localStorage key `API_BASE_URL`
+
+Example in browser console:
+
+```js
+localStorage.setItem("API_BASE_URL", "https://your-backend-url")
+```
+
+## GitHub Push Checklist
+
+Safe to push:
+
+- source code
+- notebook
+- docs
+
+Do not push:
+
+- dataset (`data/raw`)
+- trained models (`models/*.keras`, etc.)
+- local env/secrets (`.env`, virtual env folders)
+
+## Deployment Note
+
+GitHub Pages is static-only.
+
+- Frontend can be hosted on GitHub Pages.
+- Flask + TensorFlow backend must be hosted separately (Render/Railway/Azure/etc.).

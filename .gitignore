@@ -19,6 +19,8 @@ env/
 *.log
 .DS_Store
 Thumbs.db
+.env
+.env.*
 
 # Dataset and generated artifacts
 data/raw/

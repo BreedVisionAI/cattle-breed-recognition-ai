@@ -2,7 +2,8 @@ const predictBtn = document.getElementById("predictBtn");
 const imageInput = document.getElementById("imageInput");
 const resultBox = document.getElementById("result");
 
-const API_URL = "http://127.0.0.1:5000/predict";
+const API_BASE_URL = (localStorage.getItem("API_BASE_URL") || "http://127.0.0.1:5000").replace(/\/$/, "");
+const API_URL = `${API_BASE_URL}/predict`;
 
 predictBtn.addEventListener("click", async () => {
 	const file = imageInput.files[0];
@@ -31,8 +32,12 @@ predictBtn.addEventListener("click", async () => {
 			return;
 		}
 
-		const confidencePercent = (data.confidence * 100).toFixed(2);
-		resultBox.textContent = `Predicted Breed: ${data.predicted_class} (Confidence: ${confidencePercent}%)`;
+		const score = typeof data.score === "number" ? data.score : data.confidence;
+		const scorePercent = typeof data.score_percent === "number"
+			? data.score_percent.toFixed(2)
+			: ((score || 0) * 100).toFixed(2);
+
+		resultBox.textContent = `Predicted Breed: ${data.predicted_class} | Score: ${scorePercent}%`;
 	} catch (error) {
 		resultBox.textContent = `Error: ${error.message}`;
 	} finally {
