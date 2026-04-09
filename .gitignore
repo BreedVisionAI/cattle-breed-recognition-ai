@@ -1,39 +1,28 @@
-# Existing remote rule
-/datasets
-
-# Python cache and environment
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.venv/
-venv/
-env/
-
-# Jupyter and IDE
-.ipynb_checkpoints/
-*.ipynb
-.vscode/
-.idea/
-
-# Logs and OS files
-*.log
-.DS_Store
-Thumbs.db
-
-# Dataset and generated artifacts
-data/raw/
-data/processed/
-data/train/
-data/val/
-data/test/
-models/
+# Data and Large Files
+data/
 *.h5
 *.keras
-*.ckpt
-*.zip
+presentation_script.md
+ppt_content.md
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
 
-# Build artifacts
-dist/
-build/
-*.egg-info/
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

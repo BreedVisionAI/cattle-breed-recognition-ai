@@ -1,84 +1,41 @@
-# Cattle Breed Recognition AI
+# Cattle Breed Recognition using Deep Learning 🐄
 
 ## Project Overview
+This academic project aims to accurately identify various cattle breeds given a raw image. Accurate breed identification is essential for livestock management, targeted breeding, and veterinary applications. We utilize a Deep Learning pipeline focused on high efficiency and deployment flexibility.
 
-This project classifies cattle images into breed categories using deep learning.
-It uses **MobileNetV2 + transfer learning** for faster training and good performance on a moderate-sized dataset.
-
-Target breeds in this dataset:
-
-- Gir
-- Red_Sindhi
-- Sahiwal
-- Tharparkar
-
-## Why MobileNetV2
-
-- Lightweight and fast compared to very large CNN models.
-- Pretrained on ImageNet, so it already understands basic visual patterns.
-- Works well for student projects where compute resources are limited.
-
-## Model Approach (Transfer Learning)
-
-1. Load pretrained MobileNetV2 without the top classification layer.
-2. Freeze base layers so pretrained features are preserved.
-3. Add small custom layers for our breed classes.
-4. Train only the new head first.
+## Model Used
+We used **MobileNetV2** with transfer learning to efficiently train our model on a limited dataset and deployed it using Streamlit for real-time prediction. MobileNetV2 is specifically designed for mobile and resource-constrained environments, making it incredibly fast without sacrificing substantial accuracy.
 
 ## Workflow
+All major technical components for model building are unified in the root directory:
+1. **Preprocessing**: Standardizes input image size to 224x224, pixels between -1 and 1, and applies Data Augmentation (Flips, Rotation, Zoom) to prevent overfitting.
+2. **Splitting and Loading**: Automates loading pre-split training vs. validation sets and sets up prefetching for rapid GPU handoff.
+3. **Training**: Loads a pre-trained ImageNet `MobileNetV2`, fine-tunes the top layers, and trains a custom 128-node brain.
+4. **Prediction / Inference Check**: Performs sanity checks testing single images against the exported `.h5` model.
+5. **Deployment (`app.py`)**: A Streamlit application built for a user-friendly, real-time interface with a built-in Keras compatibility patch.
 
-1. Collect and organize dataset in class folders under `data/raw`.
-2. Train model using `ml/train.py`.
-3. Save model and labels in `models/`.
-4. Run backend API (`backend/app.py`).
-5. Open frontend (`frontend/index.html`) and test predictions.
+## How to Run
 
-## Folder Structure
+### Google Colab Workflow (Model Training)
+1. Upload the `model_training_pipeline.ipynb` to Google Colab.
+2. Mount your drive and ensure your `data` folder contains `train`, `val`, and `test` splits.
+3. Run the cells in `model_training_pipeline.ipynb`.
+4. Download the generated `cattle_breed_mobilenetv2.h5` model to your local machine, placing it in the root of this project.
 
-```text
-cattle-breed-recognition-ai/
-	backend/
-		app.py
-	data/
-		raw/                # local dataset (not pushed)
-		test/               # temporary uploaded files
-	frontend/
-		index.html
-		script.js
-	ml/
-		train.py
-		predict.py
-	models/               # generated model + labels (not pushed)
-	README.md
-	requirements.txt
-```
+### Local Streamlit Workflow (Inference)
+1. Ensure you have installed the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Verify `cattle_breed_mobilenetv2.h5` is in the root directory alongside `app.py`.
+3. Launch Streamlit:
+   ```bash
+   streamlit run app.py
+   ```
 
-## Setup (Local)
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-## Train
-
-```bash
-python ml/train.py
-```
-
-## Run Backend
-
-```bash
-python backend/app.py
-```
-
-## Open Frontend
-
-Open `frontend/index.html` in browser and upload an image.
-
-## Notes for GitHub
-
-- Push source code, docs, and small config files.
-- Do not push full dataset and trained model files.
-- `.gitignore` already excludes heavy and generated files.
+## Team Members
+* Person 1 - Problem Statement & Dataset
+* Person 2 - Preprocessing & Dataset Loading Module
+* Person 3 - Training & MobileNetV2 Focus
+* Person 4 - Inference Engine & Streamlit Wrapper
+* Person 5 - Results, Metrics, & Conclusion
