@@ -1,6 +1,8 @@
+streamlit
 tensorflow
-flask
-flask-cors
-numpy
-pillow
 opencv-python
+Pillow
+numpy
+matplotlib
+seaborn
+scikit-learn
