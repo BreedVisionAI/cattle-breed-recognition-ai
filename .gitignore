@@ -4,6 +4,7 @@ data/
 *.keras
 presentation_script.md
 ppt_content.md
+data.zip
 # Python
 __pycache__/
 *.py[cod]
