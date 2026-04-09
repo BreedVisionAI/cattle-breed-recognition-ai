@@ -12,6 +12,7 @@ env/
 
 # Jupyter and IDE
 .ipynb_checkpoints/
+*.ipynb
 .vscode/
 .idea/
 
@@ -22,6 +23,7 @@ Thumbs.db
 
 # Dataset and generated artifacts
 data/raw/
+data/processed/
 data/train/
 data/val/
 data/test/
@@ -29,6 +31,7 @@ models/
 *.h5
 *.keras
 *.ckpt
+*.zip
 
 # Build artifacts
 dist/
